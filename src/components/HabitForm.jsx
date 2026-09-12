@@ -1,66 +1,64 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { HabitsContext } from "../context/HabitsContext";
 
-export default function HabitForm({ onAddHabit }) {
-    const [form, setForm] = useState({ title: "", goal: "" });
-    const [error, setError] = useState("");
+export default function HabitForm() {
+  const { addHabit } = useContext(HabitsContext);
+  const [form, setForm] = useState({ title: "", goal: "" });
+  const [error, setError] = useState("");
 
-    function handleChange(event) {
-        const { name, value } = event.target;
+  function handleChange(event) {
+    const { name, value } = event.target;
+    setForm((currentForm) => ({ ...currentForm, [name]: value }));
+  }
 
-        setForm((currentForm) => ({
-            ...currentForm,
-            [name]: value,
-        }));
+  function handleSubmit(event) {
+    event.preventDefault();
+
+    const title = form.title.trim();
+    const goal = form.goal.trim();
+
+    if (!title || !goal) {
+      setError("Preencha o hábito e a meta.");
+      return;
     }
 
-    function handleSubmit(event) {
-        event.preventDefault();
+    addHabit({
+      id: crypto.randomUUID(),
+      title,
+      goal,
+      completed: false,
+    });
 
-        const title = form.title.trim(); 
-        const goal = form.goal.trim();
+    setForm({ title: "", goal: "" });
+    setError("");
+  }
 
-        if (!title || !goal) { 
-            setError("Preencha o hábito e a meta."); 
-            return; 
-        }
+  return (
+    <form className="habit-form" onSubmit={handleSubmit}>
+      <div className="field">
+        <label htmlFor="title">Hábito</label>
+        <input
+          id="title"
+          name="title"
+          value={form.title}
+          onChange={handleChange}
+          placeholder="Ex.: Ler"
+        />
+      </div>
 
-        onAddHabit({ 
-            id: crypto.randomUUID(), 
-            title, 
-            goal, 
-            completed: false, 
-        });
+      <div className="field">
+        <label htmlFor="goal">Meta</label>
+        <input
+          id="goal"
+          name="goal"
+          value={form.goal}
+          onChange={handleChange}
+          placeholder="Ex.: 20 minutos"
+        />
+      </div>
 
-        setForm({ title: "", goal: "" }); 
-        setError(""); 
-    }
-
-    return ( 
-        <form className="habit-form" onSubmit={handleSubmit}> 
-            <div className="field"> 
-                <label htmlFor="title">Hábito</label> 
-                <input 
-                    id="title" 
-                    name="title" 
-                    value={form.title} 
-                    onChange={handleChange} 
-                    placeholder="Ex.: Ler" 
-                /> 
-            </div>
-
-            <div className="field"> 
-                <label htmlFor="goal">Meta</label> 
-                <input 
-                    id="goal" 
-                    name="goal" 
-                    value={form.goal} 
-                    onChange={handleChange} 
-                    placeholder="Ex.: 20 minutos" 
-                /> 
-            </div>
-
-            {error && <p className="form-error">{error}</p>}
-            <button type="submit">Adicionar hábito</button> 
-        </form> 
-    ); 
+      {error && <p className="form-error">{error}</p>}
+      <button type="submit">Adicionar hábito</button>
+    </form>
+  );
 }
