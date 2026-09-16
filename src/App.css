@@ -95,15 +95,15 @@ body {
   font-weight: 700; 
 }
 
-.app-header { 
-  display: flex; 
-  align-items: center; 
-  justify-content: space-between; 
-  gap: 20px; 
-  padding: 16px 4%; 
-  border-bottom: 1px solid #d7dde5; 
-  background: #ffffff; 
-} 
+.app-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 16px 4%;
+  border-bottom: 1px solid #d7dde5;
+  background: #ffffff;
+}
 
 .app-header nav { 
   display: flex; 
@@ -119,6 +119,6 @@ body {
 } 
 
 .app-header a.active { 
-  background: #1f2937; 
-  color: #ffffff; 
+  background: #e0f2fe;
+  color: #0f172a;
 }

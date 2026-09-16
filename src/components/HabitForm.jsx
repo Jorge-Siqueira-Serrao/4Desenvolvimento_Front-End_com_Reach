@@ -1,7 +1,7 @@
-import { useContext, useState } from "react";
+import { useState, useContext } from "react";
 import { HabitsContext } from "../context/HabitsContext";
 
-export default function HabitForm() {
+export default function HabitForm({ onSuccess }) {
   const { addHabit } = useContext(HabitsContext);
   const [form, setForm] = useState({ title: "", goal: "" });
   const [error, setError] = useState("");
@@ -13,7 +13,6 @@ export default function HabitForm() {
 
   function handleSubmit(event) {
     event.preventDefault();
-
     const title = form.title.trim();
     const goal = form.goal.trim();
 
@@ -31,6 +30,7 @@ export default function HabitForm() {
 
     setForm({ title: "", goal: "" });
     setError("");
+    onSuccess?.();
   }
 
   return (
@@ -45,7 +45,6 @@ export default function HabitForm() {
           placeholder="Ex.: Ler"
         />
       </div>
-
       <div className="field">
         <label htmlFor="goal">Meta</label>
         <input
@@ -56,7 +55,6 @@ export default function HabitForm() {
           placeholder="Ex.: 20 minutos"
         />
       </div>
-
       {error && <p className="form-error">{error}</p>}
       <button type="submit">Adicionar hábito</button>
     </form>
